@@ -198,5 +198,5 @@ docker-compose -f docker-compose.dev.yml down
 
 - Development mode uses **hot reload** — changes are reflected immediately without rebuilding.  
 - Production mode uses **compiled code** for performance.  
-- Nginx proxies requests from **port 80** to your NestJS container running on **port 3000**.  
+- Nginx proxies requests from **port 9123** to your NestJS container running on **port 3100**.  
 
