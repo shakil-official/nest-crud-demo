@@ -41,7 +41,7 @@ nest new nest-crud-demo
 cd nest-crud-demo
 ```
 
-During project creation, select your preferred package manager (`npm` or `yarn`).  
+During project creation, select your preferred package manager (\`npm\` or \`yarn\`).  
 
 Run the project:
 
@@ -49,7 +49,7 @@ Run the project:
 npm run start:dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) — you should see `Hello World!`.
+Visit [http://localhost:3000](http://localhost:3000) — you should see \`Hello World!\`.
 
 ---
 
@@ -61,11 +61,11 @@ Generate a resource:
 nest g resource tasks --no-spec
 ```
 
-> Note: `--crud` is no longer available. CRUD logic must be implemented manually.
+> Note: \`--crud\` is no longer available. CRUD logic must be implemented manually.
 
 This will create the following **directory structure**:
 
-```
+```text
 src/
  └── tasks/
       ├── dto/
@@ -74,14 +74,15 @@ src/
       ├── tasks.controller.ts
       ├── tasks.service.ts
       └── tasks.module.ts
+
 ```
 
 ### Directory explanation
 
-- `dto/` → Data Transfer Objects (for request validation)  
-- `tasks.controller.ts` → Handles HTTP requests (GET/POST/PATCH/DELETE)  
-- `tasks.service.ts` → Contains business logic  
-- `tasks.module.ts` → Connects controller and service  
+- \`dto/\` → Data Transfer Objects (for request validation)  
+- \`tasks.controller.ts\` → Handles HTTP requests (GET/POST/PATCH/DELETE)  
+- \`tasks.service.ts\` → Contains business logic  
+- \`tasks.module.ts\` → Connects controller and service  
 
 ---
 
@@ -139,5 +140,63 @@ curl -X DELETE http://localhost:3000/tasks/1
 
 - This example uses **in-memory storage** — all data will be lost on server restart.  
 - For production, use a database (TypeORM, Prisma, etc.).  
-- Avoid running `npm run start:dev` with sudo to prevent permission errors.  
+- Avoid running \`npm run start:dev\` with sudo to prevent permission errors.  
+
+---
+
+## 8. Running with Docker
+
+You can run the project using Docker for **production** or **development**.
+
+### 8.1 Production Mode
+
+**Docker Compose file:** \`docker-compose.yml\`  
+
+**Run containers:**
+
+```bash
+docker-compose -f docker-compose.yml up --build -d
+```
+
+**Access URLs:**
+
+- NestJS API (direct): \`http://localhost:3100\`  
+- Through Nginx reverse proxy: \`http://localhost\` (port 9122)  
+
+**Stop containers:**
+
+```bash
+docker-compose -f docker-compose.yml down
+```
+
+---
+
+### 8.2 Development Mode (Hot Reload)
+
+**Docker Compose file:** \`docker-compose.dev.yml\`  
+
+**Run containers:**
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+**Access URLs:**
+
+- NestJS API (hot reload): \`http://localhost:3101\`  
+- Through Nginx reverse proxy: \`http://localhost\` (port 9123)  
+
+**Stop containers:**
+
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+---
+
+### 8.3 Notes
+
+- Development mode uses **hot reload** — changes are reflected immediately without rebuilding.  
+- Production mode uses **compiled code** for performance.  
+- Nginx proxies requests from **port 80** to your NestJS container running on **port 3000**.  
 

@@ -1,20 +1,6 @@
 #!/bin/bash
 
-# File name
-README_FILE="README.md"
-
-# Check if README.md already exists
-if [ -f "$README_FILE" ]; then
-  echo "README.md already exists. Overwrite? (y/n)"
-  read answer
-  if [ "$answer" != "y" ]; then
-    echo "Aborted."
-    exit 1
-  fi
-fi
-
-# Write README content
-cat <<EOL > $README_FILE
+cat <<'EOL' > README.md
 # NestJS 2025 Tasks CRUD API
 
 A simple NestJS 2025 project demonstrating **Tasks CRUD REST API**.
@@ -119,8 +105,8 @@ src/
 **Create Task**
 
 \`\`\`bash
-curl -X POST http://localhost:3000/tasks \\
--H "Content-Type: application/json" \\
+curl -X POST http://localhost:3000/tasks \
+-H "Content-Type: application/json" \
 -d '{"title":"Buy milk","description":"2 liters"}'
 \`\`\`
 
@@ -139,8 +125,8 @@ curl http://localhost:3000/tasks/1
 **Update Task**
 
 \`\`\`bash
-curl -X PATCH http://localhost:3000/tasks/1 \\
--H "Content-Type: application/json" \\
+curl -X PATCH http://localhost:3000/tasks/1 \
+-H "Content-Type: application/json" \
 -d '{"completed":true}'
 \`\`\`
 
@@ -158,7 +144,65 @@ curl -X DELETE http://localhost:3000/tasks/1
 - For production, use a database (TypeORM, Prisma, etc.).  
 - Avoid running \`npm run start:dev\` with sudo to prevent permission errors.  
 
+---
+
+## 8. Running with Docker
+
+You can run the project using Docker for **production** or **development**.
+
+### 8.1 Production Mode
+
+**Docker Compose file:** \`docker-compose.yml\`  
+
+**Run containers:**
+
+\`\`\`bash
+docker-compose -f docker-compose.yml up --build -d
+\`\`\`
+
+**Access URLs:**
+
+- NestJS API (direct): \`http://localhost:3000\`  
+- Through Nginx reverse proxy: \`http://localhost\` (port 80)  
+
+**Stop containers:**
+
+\`\`\`bash
+docker-compose -f docker-compose.yml down
+\`\`\`
+
+---
+
+### 8.2 Development Mode (Hot Reload)
+
+**Docker Compose file:** \`docker-compose.dev.yml\`  
+
+**Run containers:**
+
+\`\`\`bash
+docker-compose -f docker-compose.dev.yml up --build
+\`\`\`
+
+**Access URLs:**
+
+- NestJS API (hot reload): \`http://localhost:3000\`  
+- Through Nginx reverse proxy: \`http://localhost\` (port 80)  
+
+**Stop containers:**
+
+\`\`\`bash
+docker-compose -f docker-compose.dev.yml down
+\`\`\`
+
+---
+
+### 8.3 Notes
+
+- Development mode uses **hot reload** — changes are reflected immediately without rebuilding.  
+- Production mode uses **compiled code** for performance.  
+- Nginx proxies requests from **port 80** to your NestJS container running on **port 3000**.  
+
 EOL
 
-echo "README.md file has been created successfully!"
+echo "✅ README.md with full NestJS + Docker instructions has been created successfully!"
 
