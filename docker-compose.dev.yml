@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nest-crud-app-dev
+    ports:
+      - "3101:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  nginx:
+    image: nginx:alpine
+    container_name: nest-crud-nginx-dev
+    ports:
+      - "9123:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+networks:
+  callconnect:
+    external: true

@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: nest-crud-app
+    restart: unless-stopped
+    ports:
+      - "3100:3000"
+    environment:
+      NODE_ENV: production
+
+  nginx:
+    image: nginx:alpine
+    container_name: nest-crud-nginx
+    restart: unless-stopped
+    ports:
+      - "9122:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+networks:
+  callconnect:
+    external: true
